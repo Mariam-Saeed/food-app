@@ -1,0 +1,11 @@
+.auth-container {
+	background-image: linear-gradient(
+			51.22deg,
+			rgba(47, 140, 96, 0.63) -22.39%,
+			rgba(0, 0, 0, 0.6237) 61.76%
+		),
+		url(./assets/images/auth-bg.jfif);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
