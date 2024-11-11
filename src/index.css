@@ -9,3 +9,52 @@
 	background-repeat: no-repeat;
 	background-position: center center;
 }
+
+.sidebar-container .ps-sidebar-root {
+	border: none;
+}
+
+.sidebar-container .ps-sidebar-container {
+	background-color: #1f263e;
+	border-top-right-radius: 58px;
+	height: 100vh;
+}
+
+.sidebar-container .ps-menu-label {
+	color: #fff;
+	opacity: 0.65;
+}
+
+.sidebar-container .ps-menu-icon {
+	color: #fff;
+}
+
+.sidebar-container .ps-menu-button:hover {
+	background-color: #00924d1a !important;
+}
+
+.logo-menu-item .ps-menu-button:hover {
+	background-color: transparent !important;
+}
+
+.header-container {
+	background-image: url(./assets/images/header-bg.png);
+	background-position: center center;
+	background-size: cover;
+	border-radius: 15px;
+}
+
+.action-btn {
+	background-color: transparent;
+	border: none;
+	color: #009247;
+}
+
+.recipe-img {
+	width: 56px;
+	border-radius: 8px;
+}
+
+td {
+	vertical-align: middle;
+}

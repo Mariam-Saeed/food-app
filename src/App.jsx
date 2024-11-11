@@ -15,27 +15,50 @@ import Dashboard from './modules/dashboard/components/Dashboard/Dashboard';
 import RecipeData from './modules/recipes/components/RecipeData/RecipeData';
 import CategoryData from './modules/categories/components/CategoryData/CategoryData';
 import { ToastContainer } from 'react-toastify';
+import { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import ProtectedRoute from './modules/categories/components/ProtectedRoute/ProtectedRoute';
 
 function App() {
+	const initalState = () => {
+		const encodedToken = localStorage.getItem('token');
+		if (encodedToken) {
+			return jwtDecode(encodedToken);
+		}
+		return null;
+	};
+	const [loginData, setLoginData] = useState(initalState);
+	console.log(loginData);
+	const saveLoginData = () => {
+		const encodedToken = localStorage.getItem('token');
+		const decodedToken = jwtDecode(encodedToken);
+		setLoginData(decodedToken);
+	};
+	// saveLoginData();
+
 	const routes = createBrowserRouter([
 		{
 			path: '',
 			element: <AuthLayout />,
 			errorElement: <NotFound />,
 			children: [
-				{ index: true, element: <Login /> },
-				{ path: 'login', element: <Login /> },
+				{ index: true, element: <Login onSaveLoginData={saveLoginData} /> },
+				{ path: 'login', element: <Login onSaveLoginData={saveLoginData} /> },
 				{ path: 'register', element: <Registration /> },
-				{ path: 'forget-pass', element: <ForgetPass /> },
-				{ path: 'reset-pass', element: <ResetPass /> },
+				{ path: 'forget-password', element: <ForgetPass /> },
+				{ path: 'reset-password', element: <ResetPass /> },
 			],
 		},
 		{
 			path: 'dashboard',
-			element: <MasterLayout />,
+			element: (
+				<ProtectedRoute loginData={loginData}>
+					<MasterLayout loginData={loginData} />
+				</ProtectedRoute>
+			),
 			errorElement: <NotFound />,
 			children: [
-				{ index: true, element: <Dashboard /> },
+				{ index: true, element: <Dashboard loginData={loginData} /> },
 				{ path: 'recipes', element: <RecipesList /> },
 				{ path: 'recipe-data', element: <RecipeData /> },
 				{ path: 'categories', element: <CategoriesList /> },
