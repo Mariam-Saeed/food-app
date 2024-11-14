@@ -6,6 +6,7 @@ import DeleteConfirmation from '../../../shared/components/DeleteConfirmation/De
 import { toast } from 'react-toastify';
 import { api, HEADERS, RECIPES_URLS } from '../../../../api';
 import Spinner from '../../../shared/components/Spinner/Spinner';
+import NoData from '../../../shared/components/NoData/NoData';
 
 function RecipesList() {
 	const [recipes, setRecipes] = useState([]);
@@ -99,7 +100,7 @@ function RecipesList() {
 			</div>
 			{loadingList ? (
 				<Spinner />
-			) : (
+			) : recipes.length > 0 ? (
 				<div>
 					<table className='table table-striped table-borderless'>
 						<thead>
@@ -116,6 +117,8 @@ function RecipesList() {
 						<tbody>{recipesList}</tbody>
 					</table>
 				</div>
+			) : (
+				<NoData />
 			)}
 		</>
 	);

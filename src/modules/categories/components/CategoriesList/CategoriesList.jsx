@@ -7,6 +7,7 @@ import DeleteConfirmation from '../../../shared/components/DeleteConfirmation/De
 import { api, CATEGORIES_URLS, HEADERS } from '../../../../api';
 import { TailSpin } from 'react-loader-spinner';
 import Spinner from '../../../shared/components/Spinner/Spinner';
+import NoData from '../../../shared/components/NoData/NoData';
 
 function CategoriesList() {
 	const [categories, setCategories] = useState([]);
@@ -90,7 +91,7 @@ function CategoriesList() {
 			</div>
 			{loadingList ? (
 				<Spinner />
-			) : (
+			) : categories.length > 0 ? (
 				<div>
 					<table className='table table-striped table-borderless'>
 						<thead>
@@ -103,6 +104,8 @@ function CategoriesList() {
 						<tbody>{categoriesList}</tbody>
 					</table>
 				</div>
+			) : (
+				<NoData />
 			)}
 		</>
 	);
