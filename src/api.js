@@ -14,8 +14,9 @@ export const HEADERS = {
 //* Categories
 const BASE_CATEGORY = `${BASE_URL}/Category`;
 export const CATEGORIES_URLS = {
-	list: `${BASE_CATEGORY}`,
+	category: `${BASE_CATEGORY}/`,
 	delete: (id) => `${BASE_CATEGORY}/${id}`,
+	edit: (id) => `${BASE_CATEGORY}/${id}`,
 };
 
 //* Recipes

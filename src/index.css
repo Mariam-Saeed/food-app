@@ -10,8 +10,13 @@
 	background-position: center center;
 }
 
+/* .sidebar-container {
+	background-color: #1f263e;
+} */
+
 .sidebar-container .ps-sidebar-root {
 	border: none;
+	/* position: fixed; */
 }
 
 .sidebar-container .ps-sidebar-container {

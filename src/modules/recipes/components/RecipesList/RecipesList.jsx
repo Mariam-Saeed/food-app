@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import Header from '../../../shared/components/Header/Header';
 import image from '.././../../../assets/images/category.png';
+import modalImage from '../../../../assets/images/confirm-modal.png';
 import axios from 'axios';
-import DeleteConfirmation from '../../../shared/components/DeleteConfirmation/DeleteConfirmation';
 import { toast } from 'react-toastify';
 import { api, HEADERS, RECIPES_URLS } from '../../../../api';
 import Spinner from '../../../shared/components/Spinner/Spinner';
 import NoData from '../../../shared/components/NoData/NoData';
+import ModalConfirmation from '../../../shared/components/ModalConfirmation/ModalConfirmation';
+import { Button } from 'react-bootstrap';
 
 function RecipesList() {
 	const [recipes, setRecipes] = useState([]);
@@ -71,7 +73,10 @@ function RecipesList() {
 			<td>{recipe.category[0]}</td>
 
 			<td>
-				<button className='action-btn' onClick={() => handleShow(recipe.id)}>
+				<button
+					className='action-btn text-danger'
+					onClick={() => handleShow(recipe.id)}
+				>
 					<i className='fa-solid fa-trash'></i>
 				</button>
 				<button className='action-btn'>
@@ -88,12 +93,29 @@ function RecipesList() {
 				description='You can now add your items that any user can order it from the Application and you can edit'
 				image={image}
 			/>
-			<DeleteConfirmation
-				item='Recipe'
-				onHandleDelete={handleDelete}
+
+			<ModalConfirmation
 				show={show}
 				onSetShow={setShow}
-			/>
+				button={
+					<Button
+						variant='outline-danger'
+						disabled={isLoading}
+						onClick={handleDelete}
+					>
+						Delete this recipe
+					</Button>
+				}
+			>
+				<div className='text-center'>
+					<img src={modalImage} alt='modal image' />
+					<h4>Delete this Recipe ?</h4>
+					<p>
+						Are you sure you want to delete this item ? if you are sure just
+						click on delete it
+					</p>
+				</div>
+			</ModalConfirmation>
 			<div className='d-flex justify-content-between p-4'>
 				<h5>Recipe Table Details</h5>
 				<button className='btn btn-success'>Add New Recipe</button>
