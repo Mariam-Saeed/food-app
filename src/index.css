@@ -10,13 +10,15 @@
 	background-position: center center;
 }
 
-/* .sidebar-container {
-	background-color: #1f263e;
-} */
+.sidebar-container {
+	align-self: flex-start;
+	position: sticky;
+	left: 0;
+	top: 0;
+}
 
 .sidebar-container .ps-sidebar-root {
 	border: none;
-	/* position: fixed; */
 }
 
 .sidebar-container .ps-sidebar-container {
@@ -62,4 +64,12 @@
 
 td {
 	vertical-align: middle;
+}
+
+.input-container {
+	width: 47%;
+}
+
+.img-input {
+	background-color: #f1fff0;
 }

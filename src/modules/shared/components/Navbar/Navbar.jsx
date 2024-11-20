@@ -1,6 +1,9 @@
+import { useEffect, useState } from 'react';
 import avatar from '../../../../assets/images/avatar.png';
 
 function Navbar({ loginData }) {
+	console.log(loginData);
+
 	return (
 		<nav
 			className='py-2 d-flex justify-content-end align-items-center  rounded-4'

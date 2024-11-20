@@ -1,9 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import logo from '../.././.././../assets/images/logo.png';
-import axios from 'axios';
+// import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
+import { api, USERS_URLS } from '../../../../api';
+import { emailValidation } from '../../../../validations';
 
 function ForgetPass() {
 	const navigate = useNavigate();
@@ -16,10 +18,7 @@ function ForgetPass() {
 	const onSubmit = async (data) => {
 		try {
 			setIsLoading(true);
-			const response = await axios.post(
-				'https://upskilling-egypt.com:3006/api/v1/Users/Reset/Request',
-				data
-			);
+			const response = await api.post(USERS_URLS.forget, data);
 			toast.success('Check your Email');
 			navigate('/reset-password', { state: { email: data.email } });
 		} catch (error) {
@@ -51,13 +50,7 @@ function ForgetPass() {
 							placeholder='Enter your E-mail'
 							aria-label='email'
 							aria-describedby='basic-addon1'
-							{...register('email', {
-								required: 'Email is required',
-								pattern: {
-									value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-									message: 'Invalid Email',
-								},
-							})}
+							{...register('email', emailValidation)}
 						/>
 					</div>
 					{errors.email && (

@@ -11,6 +11,17 @@ export const HEADERS = {
 	headers: { Authorization: localStorage.getItem('token') },
 };
 
+//* USER AUTHENTICATION
+const BASE_USERS = `${BASE_URL}/Users`;
+export const USERS_URLS = {
+	login: `${BASE_USERS}/Login`,
+	signup: `${BASE_USERS}/Register`,
+	verify: `${BASE_USERS}/verify`,
+	forget: `${BASE_USERS}/Reset/Request`,
+	reset: `${BASE_USERS}/Reset`,
+	getById: (id) => `${BASE_USERS}/${id}`,
+};
+
 //* Categories
 const BASE_CATEGORY = `${BASE_URL}/Category`;
 export const CATEGORIES_URLS = {
@@ -22,6 +33,12 @@ export const CATEGORIES_URLS = {
 //* Recipes
 const BASE_RECIPE = `${BASE_URL}/Recipe`;
 export const RECIPES_URLS = {
-	list: `${BASE_RECIPE}`,
+	recipe: `${BASE_RECIPE}`,
 	delete: (id) => `${BASE_RECIPE}/${id}`,
+};
+
+//* TAGS
+const BASE_TAG = `${BASE_URL}/tag/`;
+export const TAGS_URL = {
+	list: `${BASE_TAG}`,
 };

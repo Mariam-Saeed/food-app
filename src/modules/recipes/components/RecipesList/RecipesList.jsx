@@ -9,6 +9,7 @@ import Spinner from '../../../shared/components/Spinner/Spinner';
 import NoData from '../../../shared/components/NoData/NoData';
 import ModalConfirmation from '../../../shared/components/ModalConfirmation/ModalConfirmation';
 import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function RecipesList() {
 	const [recipes, setRecipes] = useState([]);
@@ -26,7 +27,7 @@ function RecipesList() {
 	const getRecipesData = async () => {
 		try {
 			const response = await axios.get(
-				`${RECIPES_URLS.list}/?pageSize=10&pageNumber=1`,
+				`${RECIPES_URLS.recipe}/?pageSize=10&pageNumber=1`,
 				HEADERS
 			);
 			console.log(response.data.data);
@@ -56,7 +57,7 @@ function RecipesList() {
 	useEffect(() => {
 		getRecipesData();
 	}, []);
-
+	console.log(recipes);
 	const recipesList = recipes.map((recipe) => (
 		<tr key={recipe.id}>
 			<td>{recipe.name}</td>
@@ -69,8 +70,8 @@ function RecipesList() {
 			</td>
 			<td>{recipe.price}</td>
 			<td>{recipe.description}</td>
-			<td>{recipe.tag.name}</td>
-			<td>{recipe.category[0]}</td>
+			<td>{recipe.tag?.name}</td>
+			{/* <td>{recipe.category[0]}</td> */}
 
 			<td>
 				<button
@@ -79,9 +80,9 @@ function RecipesList() {
 				>
 					<i className='fa-solid fa-trash'></i>
 				</button>
-				<button className='action-btn'>
+				<Link to={`/recipes/${recipe.id}`} className='action-btn'>
 					<i className='fa-solid fa-pen-to-square'></i>
-				</button>
+				</Link>
 			</td>
 		</tr>
 	));
@@ -118,7 +119,9 @@ function RecipesList() {
 			</ModalConfirmation>
 			<div className='d-flex justify-content-between p-4'>
 				<h5>Recipe Table Details</h5>
-				<button className='btn btn-success'>Add New Recipe</button>
+				<Link to='new-recipe' className='btn btn-success'>
+					Add New Recipe
+				</Link>
 			</div>
 			{loadingList ? (
 				<Spinner />

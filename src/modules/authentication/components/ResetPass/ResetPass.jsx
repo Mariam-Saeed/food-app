@@ -1,9 +1,11 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import logo from '../.././.././../assets/images/logo.png';
 import { useState } from 'react';
+import { api, USERS_URLS } from '../../../../api';
+import TogglePassword from '../../../shared/components/TogglePassword/TogglePassword';
 
 function ResetPass() {
 	const navigate = useNavigate();
@@ -12,17 +14,14 @@ function ResetPass() {
 		formState: { errors },
 		handleSubmit,
 	} = useForm();
-	const [passwordType, setPasswordType] = useState(true);
-	const [confirmPasswordType, setConfirmPasswordType] = useState(true);
+	// const [passwordType, setPasswordType] = useState(true);
+	// const [confirmPasswordType, setConfirmPasswordType] = useState(true);
 	const [isLoading, setIsLoading] = useState(false);
 	const email = useLocation().state.email;
 	const onSubmit = async (data) => {
 		try {
 			setIsLoading(true);
-			const response = await axios.post(
-				'https://upskilling-egypt.com:3006/api/v1/Users/Reset',
-				data
-			);
+			const response = await api.post(USERS_URLS.reset, data);
 			toast.success('Password changed successfully');
 			navigate('/login');
 		} catch (error) {
@@ -54,13 +53,8 @@ function ResetPass() {
 							aria-label='email'
 							aria-describedby='basic-addon1'
 							value={email}
-							{...register('email', {
-								required: 'Email is required',
-								pattern: {
-									value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-									message: 'Invalid Email',
-								},
-							})}
+							readOnly
+							{...register('email')}
 						/>
 					</div>
 					{errors.email && (
@@ -86,7 +80,7 @@ function ResetPass() {
 						<p className='text-danger mb-2'>{errors.seed.message}</p>
 					)}
 
-					<div className='input-group mb-2'>
+					{/* <div className='input-group mb-2'>
 						<span className='input-group-text' id='basic-addon1'>
 							<i className='fa-solid fa-lock'></i>
 						</span>
@@ -110,12 +104,20 @@ function ResetPass() {
 						>
 							<i className='fa-regular fa-eye '></i>
 						</button>
+					</div> */}
+					<div className='input-group mb-2 position-relative'>
+						<TogglePassword
+							register={register('password', {
+								required: 'Password is required',
+							})}
+							placeholder='New Password'
+						/>
 					</div>
 					{errors.password && (
 						<p className='text-danger mb-2'>{errors.password.message}</p>
 					)}
 
-					<div className='input-group mb-2'>
+					{/* <div className='input-group mb-2'>
 						<span className='input-group-text' id='basic-addon1'>
 							<i className='fa-solid fa-lock'></i>
 						</span>
@@ -139,6 +141,14 @@ function ResetPass() {
 						>
 							<i className='fa-regular fa-eye'></i>
 						</button>
+					</div> */}
+					<div className='input-group mb-2 position-relative'>
+						<TogglePassword
+							register={register('confirmPassword', {
+								required: 'Confirm Password is required',
+							})}
+							placeholder='Confirm New Password'
+						/>
 					</div>
 					{errors.confirmPassword && (
 						<p className='text-danger mb-3'>{errors.confirmPassword.message}</p>

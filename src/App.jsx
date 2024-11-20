@@ -18,6 +18,8 @@ import { ToastContainer } from 'react-toastify';
 import { useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import ProtectedRoute from './modules/categories/components/ProtectedRoute/ProtectedRoute';
+import RecipeForm from './modules/recipes/components/RecipeForm/RecipeForm';
+import Verification from './modules/authentication/components/Verification/Verification';
 
 function App() {
 	const initalState = () => {
@@ -45,6 +47,7 @@ function App() {
 				{ index: true, element: <Login onSaveLoginData={saveLoginData} /> },
 				{ path: 'login', element: <Login onSaveLoginData={saveLoginData} /> },
 				{ path: 'register', element: <Registration /> },
+				{ path: 'verify-user', element: <Verification /> },
 				{ path: 'forget-password', element: <ForgetPass /> },
 				{ path: 'reset-password', element: <ResetPass /> },
 			],
@@ -60,6 +63,8 @@ function App() {
 			children: [
 				{ index: true, element: <Dashboard loginData={loginData} /> },
 				{ path: 'recipes', element: <RecipesList /> },
+				{ path: 'recipes/new-recipe', element: <RecipeForm /> },
+				{ path: 'recipes/:recipeId', element: <RecipeForm /> },
 				{ path: 'recipe-data', element: <RecipeData /> },
 				{ path: 'categories', element: <CategoriesList /> },
 				{ path: 'category-data', element: <CategoryData /> },

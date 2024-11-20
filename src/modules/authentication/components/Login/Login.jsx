@@ -1,26 +1,38 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../.././.././../assets/images/logo.png';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { api, USERS_URLS } from '../../../../api';
+import TogglePassword from '../../../shared/components/TogglePassword/TogglePassword';
+import { emailValidation } from '../../../../validations';
 
 function Login({ onSaveLoginData }) {
+	const email = useLocation().state?.email || '';
+	const password = useLocation().state?.password || '';
+
 	const navigate = useNavigate();
 	const {
 		register,
+		setValue,
 		formState: { errors },
 		handleSubmit,
-	} = useForm();
-	const [passwordType, setPasswordType] = useState(true);
-	const [showIcon, setShowIcon] = useState(false);
+	} = useForm({
+		defaultValues: {
+			email,
+			password,
+		},
+	});
+
+	useEffect(() => {
+		setValue('email', email);
+		setValue('password', password);
+	}, [setValue, email, password]);
+
 	const onSubmit = async (data) => {
 		try {
-			const response = await axios.post(
-				'https://upskilling-egypt.com:3006/api/v1/Users/Login',
-				data
-			);
+			const response = await api.post(USERS_URLS.login, data);
 
 			localStorage.setItem('token', response.data.token);
 			onSaveLoginData();
@@ -53,13 +65,7 @@ function Login({ onSaveLoginData }) {
 							placeholder='Enter your E-mail'
 							aria-label='email'
 							aria-describedby='basic-addon1'
-							{...register('email', {
-								required: 'Email is required',
-								pattern: {
-									value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-									message: 'Invalid Email',
-								},
-							})}
+							{...register('email', emailValidation)}
 						/>
 					</div>
 					{errors.email && (
@@ -67,32 +73,12 @@ function Login({ onSaveLoginData }) {
 					)}
 
 					<div className='input-group mb-2 position-relative'>
-						<span className='input-group-text' id='basic-addon1'>
-							<i className='fa-solid fa-lock'></i>
-						</span>
-						<input
-							type={passwordType ? 'password' : 'text'}
-							className='form-control'
-							placeholder='Password'
-							aria-label='password'
-							aria-describedby='basic-addon1'
-							{...register('password', {
+						<TogglePassword
+							register={register('password', {
 								required: 'Password is required',
 							})}
+							placeholder='Password'
 						/>
-						<button
-							className='position-absolute end-0 h-100 d-flex align-items-center pe-2 border-0 bg-transparent'
-							style={{ zIndex: 10 }}
-							onClick={(e) => {
-								e.preventDefault();
-								setPasswordType((prev) => !prev);
-								setShowIcon((prev) => !prev);
-							}}
-						>
-							<i
-								className={`fa-regular ${showIcon ? 'fa-eye-slash' : 'fa-eye'}`}
-							></i>
-						</button>
 					</div>
 					{errors.password && (
 						<p className='text-danger mb-2'>{errors.password.message}</p>
