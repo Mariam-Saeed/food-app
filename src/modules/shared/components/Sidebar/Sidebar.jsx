@@ -47,7 +47,14 @@ function SideBar() {
 					</MenuItem>
 					<MenuItem
 						icon={<i className='fa-solid fa-right-from-bracket mx-3'></i>}
-						component={<Link to='/login' />}
+						component={
+							<Link
+								onClick={() => {
+									localStorage.removeItem('token');
+								}}
+								to='/login'
+							/>
+						}
 					>
 						Logout
 					</MenuItem>
