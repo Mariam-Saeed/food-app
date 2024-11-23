@@ -34,7 +34,9 @@ export const CATEGORIES_URLS = {
 const BASE_RECIPE = `${BASE_URL}/Recipe`;
 export const RECIPES_URLS = {
 	recipe: `${BASE_RECIPE}`,
+	getRecipe: (id) => `${BASE_RECIPE}/${id}`,
 	delete: (id) => `${BASE_RECIPE}/${id}`,
+	update: (id) => `${BASE_RECIPE}/${id}`,
 };
 
 //* TAGS

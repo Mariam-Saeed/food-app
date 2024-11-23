@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styles from './RecipeForm.module.css';
 import { useForm } from 'react-hook-form';
 import {
@@ -9,16 +9,22 @@ import {
 	TAGS_URL,
 } from '../../../../api';
 import { useEffect, useState } from 'react';
+import UseBeforeUnload from '../../../../hooks/UseBeforeUnload';
 
 function RecipeForm() {
 	const [categories, setCategories] = useState([]);
 	const [tags, setTags] = useState([]);
 	const params = useParams();
+	console.log(params);
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors, isSubmitting },
 	} = useForm({ mode: 'onChange' });
+	const navigate = useNavigate();
+	const recipeId = params.recipeId;
+	UseBeforeUnload();
 
 	useEffect(() => {
 		(async () => {
@@ -33,17 +39,31 @@ function RecipeForm() {
 
 		(async () => {
 			try {
-				const response = await api.get(
-					`${CATEGORIES_URLS.category}?pageSize=10&pageNumber=1`,
-					HEADERS
-				);
+				const response = await api.get(CATEGORIES_URLS.category, HEADERS);
 				console.log(response.data.data);
 				setCategories(response.data.data);
 			} catch (error) {
 				console.log(error);
 			}
 		})();
-	}, []);
+
+		// console.log('params:', params.recipeId);
+		if (recipeId) {
+			const getRecipe = async () => {
+				const response = await api.get(RECIPES_URLS.getRecipe(recipeId));
+				console.log(response.data);
+
+				const recipe = response?.data;
+				setValue('name', recipe?.name);
+				setValue('description', recipe?.description);
+				setValue('price', recipe?.price);
+				setValue('categoriesIds', recipe?.category?.[0].id);
+				setValue('tagId', recipe?.tag.id);
+				setValue('name', recipe.name);
+			};
+			getRecipe();
+		}
+	}, [setValue, recipeId]);
 
 	const onSubmit = async (data) => {
 		const formData = new FormData();
@@ -59,10 +79,19 @@ function RecipeForm() {
 			if (key === 'recipeImage') formData.append(key, data[key][0]);
 			else formData.append(key, data[key]);
 		}
-		console.log(data);
+		// console.log(data);
 		try {
-			const response = await api.post(RECIPES_URLS.recipe, formData, HEADERS);
-			console.log(response);
+			if (recipeId) {
+				const response = await api.put(
+					RECIPES_URLS.update(recipeId),
+					formData,
+					HEADERS
+				);
+			} else {
+				const response = await api.post(RECIPES_URLS.recipe, formData, HEADERS);
+			}
+			navigate(-1);
+			// console.log(response);
 		} catch (error) {
 			console.log(error);
 		}
@@ -172,7 +201,7 @@ function RecipeForm() {
 				</div>
 
 				<div className={styles['actions-wrapper']}>
-					<button>Cancel</button>
+					<Link to={-1}>Cancel</Link>
 					<button disabled={isSubmitting} className={styles['btn-primary']}>
 						{isSubmitting ? 'Saving' : 'Save'}
 					</button>

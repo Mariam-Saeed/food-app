@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { api, USERS_URLS } from '../../../../api';
 import { emailValidation, PasswordValidation } from '../../../../validations';
 import TogglePassword from '../../../shared/components/TogglePassword/TogglePassword';
+import UseBeforeUnload from '../../../../hooks/UseBeforeUnload';
 
 function Registration() {
 	const navigate = useNavigate();
@@ -16,6 +17,8 @@ function Registration() {
 		formState: { errors, isSubmitting },
 		handleSubmit,
 	} = useForm();
+	UseBeforeUnload();
+
 	const onSubmit = async (data) => {
 		const formData = new FormData();
 

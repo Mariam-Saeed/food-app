@@ -9,7 +9,7 @@ import Spinner from '../../../shared/components/Spinner/Spinner';
 import NoData from '../../../shared/components/NoData/NoData';
 import ModalConfirmation from '../../../shared/components/ModalConfirmation/ModalConfirmation';
 import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 function RecipesList() {
 	const [recipes, setRecipes] = useState([]);
@@ -80,7 +80,7 @@ function RecipesList() {
 				>
 					<i className='fa-solid fa-trash'></i>
 				</button>
-				<Link to={`/recipes/${recipe.id}`} className='action-btn'>
+				<Link to={`${recipe.id}`} className='action-btn'>
 					<i className='fa-solid fa-pen-to-square'></i>
 				</Link>
 			</td>
@@ -89,6 +89,7 @@ function RecipesList() {
 
 	return (
 		<>
+			<Outlet />
 			<Header
 				title='Recipes Items'
 				description='You can now add your items that any user can order it from the Application and you can edit'
